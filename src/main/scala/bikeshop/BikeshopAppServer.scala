@@ -21,8 +21,11 @@ import scala.util.Try
 import scala.collection.mutable
 import cats.syntax.either._
 
+import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.server._
 
 
+//The IOApp application enables running a service which uses an IO monad effect
 object BikeshopAppServer extends IOApp {
 
 
@@ -37,10 +40,9 @@ object BikeshopAppServer extends IOApp {
     "XL",
 101495)
 
-  
-
 val bikes:Map[Int,Bike] = Map(surly.id -> surly)
 
+//helper function
  private def findBikesByBrand(brand: String): List[Bike] =
     bikes.values.filter(_.brand == brand).toList
 
@@ -92,6 +94,7 @@ def bikeRoutes[F[_] : Monad]: HttpRoutes[F] = {
 val brands :  mutable.Map[String, Brand] = 
     mutable.Map("Surly" -> Brand("Surly"), "Giant" -> Brand("Giant"))
 
+val brandsList : List[Brand] = brands.keys.toList.map(name => Brand(name))
 
 def brandRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
   val dsl = Http4sDsl[F]
@@ -103,9 +106,10 @@ implicit val brandDecoder: EntityDecoder[F, Brand] = jsonOf[F, Brand]
   HttpRoutes.of[F] {
     //Get all brands
     case GET -> Root / "brands"  => 
-        brands match {
-            case _ => Ok(brands.asJson)
+        brandsList match {
             case Nil => NotFound("No brands available")
+            case _ => Ok(brandsList.asJson)
+
         }
 
     //Add a new brand
@@ -126,7 +130,34 @@ def allRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
   bikeRoutes[F] <+> brandRoutes[F]
 }
 
+
+  def allRoutesComplete[F[_] : Concurrent]: HttpApp[F] = {
+    allRoutes.orNotFound
+  }
+
+  //ExecutionContext needed to handle incoming requests concurrently
+  import scala.concurrent.ExecutionContext.global
+
+    override def run(args: List[String]): IO[ExitCode] = {
+
+    //Mounting the routes to the given paths
+    val apis = Router(
+      "/" -> BikeshopAppServer.bikeRoutes[IO],
+      "/brands" -> BikeshopAppServer.brandRoutes[IO]
+    ).orNotFound
+
+    //The builder is bound to an en effects as the execution of the service
+    // may lead to side effects. The effect is bound to an IO modad (cats-effect)
+    BlazeServerBuilder[IO](runtime.compute)
+      .bindHttp(8080, "localhost")
+      .withHttpApp(apis)
+      .resource
+      .use(_ => IO.never)
+      .as(ExitCode.Success)
+  }
+
 }
+
 
 
 
