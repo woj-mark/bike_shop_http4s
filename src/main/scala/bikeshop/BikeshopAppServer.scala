@@ -14,23 +14,20 @@ import io.circe.generic.auto._
 import io.circe.syntax._
 import org.http4s.dsl._
 import org.http4s.dsl.impl._
-import org.http4s.headers._
 
 import java.time.Year
 import scala.util.Try
 import scala.collection.mutable
 import cats.syntax.either._
 
-import org.http4s.server.blaze.BlazeServerBuilder
+//mport org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server._
+import org.http4s.blaze.server.BlazeServerBuilder
 
 
 //The IOApp application enables running a service which uses an IO monad effect
 object BikeshopAppServer extends IOApp {
 
-
-
-   
 // Temporary in-memory data
   val surly: Bike = Bike(
    "Trucker",
@@ -40,7 +37,7 @@ object BikeshopAppServer extends IOApp {
     "XL",
 101495)
 
-val bikes:Map[Int,Bike] = Map(surly.id -> surly)
+val bikes:mutable.Map[Int,Bike] = mutable.Map(surly.id -> surly)
 
 //helper function
  private def findBikesByBrand(brand: String): List[Bike] =
@@ -68,7 +65,8 @@ def bikeRoutes[F[_] : Monad]: HttpRoutes[F] = {
   val dsl = Http4sDsl[F]
   import dsl._
 
-
+  //Decoder for the incoming JSON to a bike
+  //implicit val bikeDecoder: EntityDecoder[F, Bike] = jsonOf[F, Bike]
 
   HttpRoutes.of[F] {
     case GET -> Root / "bikes" :? BrandQueryParamMatcher(brand) +& YearQueryParamMatcher(optionalYear) => 
@@ -87,8 +85,35 @@ def bikeRoutes[F[_] : Monad]: HttpRoutes[F] = {
                 case None => Ok(bikeByBrand.head.asJson)
 
 
-        }}
-}
+        }
+
+      //Get all bikes
+       case GET -> Root / "bikes" =>
+          val returnBikes: List[Bike]= bikes.values.toList
+
+          returnBikes match {
+            case Nil => NotFound("No bikes in the store")
+            case _ => Ok(returnBikes.asJson)
+          }
+
+    
+      //Add a new bike
+      // case req@POST -> Root / "bikes" => 
+      //   for{
+      //   bike <- req.as[Bike]
+      //   _ = bikes.put(bike.id,bike)
+      //   res <- Ok.headers(`Content-Encoding`(ContentCoding.gzip))
+      //           .map(_.addCookie(ResponseCookie("My-Cookie", "value")))
+      //   } yield res
+  }
+} 
+      
+        
+    
+
+
+        
+
 
 
 val brands :  mutable.Map[String, Brand] = 
@@ -102,6 +127,7 @@ def brandRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
 
   //Decoder for the incoming JSON to a Brand
 implicit val brandDecoder: EntityDecoder[F, Brand] = jsonOf[F, Brand]
+//implicit val brandEncoder: EntityEncoder[F, Brand] = jsonEncoderOf[F, Brand]
 
   HttpRoutes.of[F] {
     //Get all brands
@@ -117,11 +143,11 @@ implicit val brandDecoder: EntityDecoder[F, Brand] = jsonOf[F, Brand]
         for{
         brand <- req.as[Brand]
         _ = brands.put(brand.toString,brand)
-        res <- Ok.headers(`Content-Encoding`(ContentCoding.gzip))
-                .map(_.addCookie(ResponseCookie("My-Cookie", "value")))
+        res <- Ok(brands.asJson)
         } yield res
   }
 }
+
 
 //Combining the brand and bike routes (semigroups of Kleisli (effect)) into one semigroup
 def allRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
@@ -135,32 +161,39 @@ def allRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
     allRoutes.orNotFound
   }
 
-  //ExecutionContext needed to handle incoming requests concurrently
-  import scala.concurrent.ExecutionContext.global
 
-    override def run(args: List[String]): IO[ExitCode] = {
+  override def run(args: List[String]): IO[ExitCode] = {
+
 
     //Mounting the routes to the given paths
     val apis = Router(
-      "/" -> BikeshopAppServer.bikeRoutes[IO],
-      "/brands" -> BikeshopAppServer.brandRoutes[IO]
+      "/api1" -> BikeshopAppServer.bikeRoutes[IO],
+      "/api2" -> BikeshopAppServer.brandRoutes[IO]
     ).orNotFound
+
+
+  //ExecutionContext needed to handle incoming requests concurrently
+ //import scala.concurrent.ExecutionContext.global
+
 
     //The builder is bound to an en effects as the execution of the service
     // may lead to side effects. The effect is bound to an IO modad (cats-effect)
-    BlazeServerBuilder[IO](runtime.compute)
-      .bindHttp(8080, "localhost")
+    BlazeServerBuilder[IO]
+      .bindHttp(8082, "localhost")
       .withHttpApp(apis)
       .resource
       .use(_ => IO.never)
+      //The last statement to map the result of the IO
       .as(ExitCode.Success)
-  }
+  
 
 }
 
 
 
 
+
+}
 
 
 

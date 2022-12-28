@@ -9,10 +9,12 @@ object bike{
     size: String,
     id: Int)
 
-    import io.circe.Encoder
+    import io.circe.{Encoder}
   import io.circe.generic.semiauto.deriveEncoder
 
-  implicit val bikeEncoder: Encoder[Bike] = deriveEncoder[Bike]
+  implicit val bikeEncoder: Encoder[Bike] = deriveEncoder[Bike] 
+  //implicit val bikeDecoder: Decoder[Bike] = deriveDecoder[Bike]
+
 }
 
 
