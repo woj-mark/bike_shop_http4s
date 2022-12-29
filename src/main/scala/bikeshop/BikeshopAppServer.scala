@@ -4,7 +4,7 @@ import bikeshop.domain.brand._
 import bikeshop.domain.bike._
 
 
-import cats._
+//import cats._
 import cats.effect._
 import cats.implicits._
 import org.http4s.circe._
@@ -61,12 +61,12 @@ implicit val yearQueryParamDecoder: QueryParamDecoder[Year] =
     }
 
   
-def bikeRoutes[F[_] : Monad]: HttpRoutes[F] = {
+def bikeRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
   val dsl = Http4sDsl[F]
   import dsl._
 
   //Decoder for the incoming JSON to a bike
-  //implicit val bikeDecoder: EntityDecoder[F, Bike] = jsonOf[F, Bike]
+  implicit val bikeDecoder: EntityDecoder[ F , Bike] = jsonOf[F , Bike]
 
   HttpRoutes.of[F] {
     case GET -> Root / "bikes" :? BrandQueryParamMatcher(brand) +& YearQueryParamMatcher(optionalYear) => 
@@ -98,13 +98,12 @@ def bikeRoutes[F[_] : Monad]: HttpRoutes[F] = {
 
     
       //Add a new bike
-      // case req@POST -> Root / "bikes" => 
-      //   for{
-      //   bike <- req.as[Bike]
-      //   _ = bikes.put(bike.id,bike)
-      //   res <- Ok.headers(`Content-Encoding`(ContentCoding.gzip))
-      //           .map(_.addCookie(ResponseCookie("My-Cookie", "value")))
-      //   } yield res
+      case req@POST -> Root / "bikes" => 
+        for{
+        bike <- req.as[Bike]
+        _ = bikes.put(bike.id,bike)
+        res <- Ok(bikes.asJson)
+        } yield res
   }
 } 
       
@@ -179,7 +178,7 @@ def allRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
     //The builder is bound to an en effects as the execution of the service
     // may lead to side effects. The effect is bound to an IO modad (cats-effect)
     BlazeServerBuilder[IO]
-      .bindHttp(8082, "localhost")
+      .bindHttp(8083, "localhost")
       .withHttpApp(apis)
       .resource
       .use(_ => IO.never)
