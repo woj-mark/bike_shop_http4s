@@ -1,0 +1,24 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, Some(549995a1-7189-4210-b30b-e725437c8fba), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[31merror[0m] [0m[0mjava.net.BindException: Address already in use: bind[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.base/sun.nio.ch.Net.bind0(Native Method)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.base/sun.nio.ch.Net.bind(Net.java:455)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.base/sun.nio.ch.Net.bind(Net.java:447)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:227)[0m
+[0m[[0m[31merror[0m] [0m[0m	at java.base/java.nio.channels.ServerSocketChannel.bind(ServerSocketChannel.java:162)[0m
+[0m[[0m[31merror[0m] [0m[0m	at org.http4s.blaze.channel.nio1.NIO1SocketServerGroup.$anonfun$bind$1(NIO1SocketServerGroup.scala:258)[0m
+[0m[[0m[31merror[0m] [0m[0m	at scala.util.Try$.apply(Try.scala:210)[0m
+[0m[[0m[31merror[0m] [0m[0m	at org.http4s.blaze.channel.nio1.NIO1SocketServerGroup.bind(NIO1SocketServerGroup.scala:257)[0m
+[0m[[0m[31merror[0m] [0m[0m	at org.http4s.blaze.channel.nio1.NIO1SocketServerGroup$$anon$1.bind(NIO1SocketServerGroup.scala:109)[0m
+[0m[[0m[31merror[0m] [0m[0m	at org.http4s.blaze.server.BlazeServerBuilder.$anonfun$resource$4(BlazeServerBuilder.scala:414)[0m
+[0m[[0m[31merror[0m] [0m[0m	at map @ org.http4s.blaze.server.BlazeServerBuilder.mkServerChannel$1(BlazeServerBuilder.scala:411)[0m
+[0m[[0m[31merror[0m] [0m[0m	at make @ org.http4s.blaze.server.BlazeServerBuilder.resource(BlazeServerBuilder.scala:402)[0m
+[0m[[0m[31merror[0m] [0m[0m	at make @ org.http4s.blaze.server.BlazeServerBuilder.resource(BlazeServerBuilder.scala:402)[0m
+[0m[[0m[31merror[0m] [0m[0m	at delay @ org.http4s.blaze.server.BlazeServerBuilder.resource(BlazeServerBuilder.scala:395)[0m
+[0m[[0m[31merror[0m] [0m[0m	at make @ org.http4s.blaze.server.BlazeServerBuilder.resource(BlazeServerBuilder.scala:402)[0m
+[0m[[0m[31merror[0m] [0m[0m	at make @ org.http4s.blaze.server.BlazeServerBuilder.resource(BlazeServerBuilder.scala:402)[0m
+[0m[[0m[31merror[0m] [0m[0m	at delay @ org.http4s.blaze.server.BlazeServerBuilder.verifyTimeoutRelations(BlazeServerBuilder.scala:455)[0m
+[0m[[0m[31merror[0m] [0m[0m(Compile / [31mrun[0m) java.net.BindException: Address already in use: bind[0m
+[0m[[0m[31merror[0m] [0m[0mTotal time: 3 s, completed 3 Jan 2023, 20:55:47[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

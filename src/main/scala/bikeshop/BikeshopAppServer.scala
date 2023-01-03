@@ -116,9 +116,9 @@ def bikeRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
 
 
 val brands :  mutable.Map[String, Brand] = 
-    mutable.Map("Surly" -> Brand("Surly"), "Giant" -> Brand("Giant"))
+    mutable.Map("Surly" -> Brand("Surly",1), "Giant" -> Brand("Giant",2))
 
-val brandsList : List[Brand] = brands.keys.toList.map(name => Brand(name))
+val brandsList : List[Brand] = brands.keys.toList.zipWithIndex.map{case (name,index) => Brand(name, index)}
 
 def brandRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
   val dsl = Http4sDsl[F]
@@ -178,7 +178,7 @@ def allRoutes[F[_] : Concurrent]: HttpRoutes[F] = {
     //The builder is bound to an en effects as the execution of the service
     // may lead to side effects. The effect is bound to an IO modad (cats-effect)
     BlazeServerBuilder[IO]
-      .bindHttp(8083, "localhost")
+      .bindHttp(8084, "localhost")
       .withHttpApp(apis)
       .resource
       .use(_ => IO.never)
