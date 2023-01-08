@@ -9,6 +9,9 @@ object bike{
     size: String,
     id: Int)
 
+
+
+
     import io.circe.{Encoder}//,Decoder}
   import io.circe.generic.semiauto.deriveEncoder
   //import io.circe.generic.semiauto.deriveDecoder
