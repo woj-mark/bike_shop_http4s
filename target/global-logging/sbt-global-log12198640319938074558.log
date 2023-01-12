@@ -1,7 +1,0 @@
-[0m[[0m[0mdebug[0m] [0m[0m> Exec(run, Some(076da0ed-6986-4b83-a540-7fa2688b3d33), Some(CommandSource(console0)))[0m
-[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / run[0m
-[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
-[0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to C:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\target\scala-2.13\classes ...[0m
-[0m[[0m[32msuccess[0m] [0m[0mTotal time: 7 s, completed 11 Jan 2023, 17:50:48[0m
-[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m
-[0m[[0m[31merror[0m] [0m[0mserver failed to start on local:sbt-server-a5fa93c99b09bd17af5f. java.io.IOException: Could not create lock for \\.\pipe\sbt-server-a5fa93c99b09bd17af5f_lock, error 5[0m

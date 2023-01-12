@@ -1,11 +1,12 @@
 package bikeshop.service
 
-import bikeshop.repository._
-import bikeshop.domain.bike
+import bikeshop.repository.BikeRepository
 
-import org.http4s.circe._
+import org.http4s._
+
 import org.http4s.dsl.Http4sDsl
 import cats.effect.IO
+import bikeshop.domain.bike._
 
 
 class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
@@ -14,13 +15,7 @@ class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
   //Decoder for the incoming JSON to a bike
   //implicit val bikeDecoder: EntityDecoder[ F , Bike] = jsonOf[F , Bike]
 
-  def bikeRoutes[IO]: HttpRoutes[F] = {
-    val dsl = Http4sDsl[IO]{}
-    import dsl._
-
-
-
-    HttpRoutes.of[IO] {
+  val bikeRoutes=    HttpRoutes.of[IO] {
       //Get all bikes
       case GET -> Root / "bikes" =>
         val allBikes : IO[List[Bike]] = bikeRepo.findAllBikes
@@ -29,7 +24,7 @@ class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
         ) 
         }
 }   
-}
+
 
 
    // case GET -> Root / "bikes" :? BrandQueryParamMatcher(brand) +& YearQueryParamMatcher(optionalYear) => 
