@@ -13,8 +13,6 @@ import org.http4s.blaze.server.BlazeServerBuilder
 object BikeshopAppServer extends IOApp {
 
 
-  //override def run(args: List[String]): IO[ExitCode] = {
-
     //Transactor returning the IO effect
     val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
   "org.postgresql.Driver",
@@ -23,25 +21,12 @@ object BikeshopAppServer extends IOApp {
   "docker"   // password
 )
 
- //Mounting the routes to the given path
-    // def makeRouter(transactor: Transactor[IO]) : Kleisli[IO, Request[IO], Response[IO]] = 
-    // Router[IO](
-    //   "/api1" -> BikeService.bikeRoutes[IO],
-    // ).orNotFound
-
-
+  override def run(args: List[String]): IO[ExitCode] = {
 
   val repository = new BikeRepository(xa)
 
-
-  //import scala.concurrent.ExecutionContext.global
-
-  override def run(args: List[String]): IO[ExitCode] = {
-
-
-
    BlazeServerBuilder[IO]
-      .bindHttp(8085, "localhost")
+      .bindHttp(8087, "localhost")
       .withHttpApp(new BikeService(repository).bikeRoutes.orNotFound)
       .resource
       .use(_ => IO.never)
