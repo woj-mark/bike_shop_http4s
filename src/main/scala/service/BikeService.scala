@@ -1,6 +1,7 @@
 package bikeshop.service
 
 import bikeshop.repository.BikeRepository
+import bikeshop.domain.bikeNotFoundError._
 
 import org.http4s._
 
@@ -12,55 +13,56 @@ import org.http4s.circe._
 
 class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
       
-      
-  //Decoder for the incoming JSON to a bike
-  //implicit val bikeDecoder: EntityDecoder[ IO , Bike] = jsonOf[IO , Bike]
-
   val bikeRoutes= HttpRoutes.of[IO] {
+
       //Get all bikes
       case GET -> Root / "bikes" =>
         for{
             allBikes <- bikeRepo.findAllBikes
-            response <- Ok(allBikes.asJson)
-        } yield response
+            allBikesResponse <- Ok(allBikes.asJson)
+        } yield allBikesResponse
+
+      //Get bike by id
+      case GET -> Root/ "bikes"/ IntVar(id) =>
+        for{
+            bikeWithId <-  bikeRepo.findBikeByID(id)
+            bikeWithIdResponse <- bikeResult(bikeWithId)
+        } yield bikeWithIdResponse
+
+        //Add a new bike
+       case req@ POST -> Root/ "bikes" =>
+        for{
+            bike <- req.decodeJson[Bike]
+            createdBike <- bikeRepo.addBike(bike)
+            createdBikeResponse <- bikeResult(createdBike)
+        } yield createdBikeResponse
+
+        //Update an existing bike
+      case req@ PUT -> Root/ "bikes"/ IntVar(id) =>
+            for{
+                bike <- req.decodeJson[Bike]
+                updatedBike <- bikeRepo.updateBike(id,bike)
+                updatedBikeResponse <- bikeResult(updatedBike)
+            } yield updatedBikeResponse
+
+      case DELETE -> Root/ "bikes"/ IntVar(id) =>
+        bikeRepo.deleteBike(id).flatMap{
+            case Left(error) => NotFound(error.message)
+            case Right(message) => Ok(message)
         }
-}   
+        
+        
+
+        }
 
 
-
-   // case GET -> Root / "bikes" :? BrandQueryParamMatcher(brand) +& YearQueryParamMatcher(optionalYear) => 
-    //     val bikeByBrand = findBikesByBrand(brand)
-
-    //     optionalYear match {
-    //         case Some(yr) => 
-    //             yr.fold(
-    //             _ => BadRequest("The given year is not valid"),
-    //             {year =>
-    //                 val bikesByBrandAndYear = 
-    //                     bikeByBrand.filter(_.year == year.getValue)
-                    
-    //                 Ok(bikesByBrandAndYear.head.asJson)}
-    //             )
-    //             case None => Ok(bikeByBrand.head.asJson)
-
-
-    //     }
-
- 
-
-    
-//       //Add a new bike
-//       case req@POST -> Root / "bikes" => 
-//         for{
-//         bike <- req.as[Bike]
-//         _ = bikes.put(bike.id,bike)
-//         res <- Ok(bikes.asJson)
-//         } yield res
-//   }
-//    case GET -> Root / "bikes" =>
-//           val returnBikes: List[Bike]= bikes.values.toList
-
-//           returnBikes match {
-//             case Nil => NotFound("No bikes in the store")
-//             case _ => Ok(returnBikes.asJson)
-//           }
+   
+    // A helper method to extract the response values from Either
+      private def bikeResult(data : Either[BikeNotFoundError,Bike]) = {
+            data match{
+                case Left(error) => NotFound(error.message)
+                case Right(correct) => Ok(correct.asJson)
+            }
+        }
+    }
+   

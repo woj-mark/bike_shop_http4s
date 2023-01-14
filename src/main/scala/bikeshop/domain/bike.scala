@@ -12,12 +12,11 @@ object bike{
 
 
 
-    import io.circe.{Encoder}//,Decoder}
-  import io.circe.generic.semiauto.deriveEncoder
-  //import io.circe.generic.semiauto.deriveDecoder
+    import io.circe.{Encoder,Decoder}
+import io.circe.generic.semiauto._
 
   implicit val bikeEncoder: Encoder[Bike] = deriveEncoder[Bike] 
-  //implicit val bikeDecoder: Decoder[Bike] = deriveDecoder[Bike]
+  implicit val bikeDecoder: Decoder[Bike] = deriveDecoder[Bike]
 
 }
 

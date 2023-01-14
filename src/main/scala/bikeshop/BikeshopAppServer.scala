@@ -26,7 +26,7 @@ object BikeshopAppServer extends IOApp {
   val repository = new BikeRepository(xa)
 
    BlazeServerBuilder[IO]
-      .bindHttp(8087, "localhost")
+      .bindHttp(8098, "localhost")
       .withHttpApp(new BikeService(repository).bikeRoutes.orNotFound)
       .resource
       .use(_ => IO.never)
