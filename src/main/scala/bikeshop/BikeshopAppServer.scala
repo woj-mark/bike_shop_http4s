@@ -7,6 +7,7 @@ import doobie.util.transactor.Transactor
 import bikeshop.repository.BikeRepository
 import bikeshop.service.BikeService
 import org.http4s.blaze.server.BlazeServerBuilder
+import config.Conf
 
 
 //The IOApp application enables running a service which uses an IO monad effect
@@ -21,18 +22,25 @@ object BikeshopAppServer extends IOApp {
   "docker"   // password
 )
 
+
+
   override def run(args: List[String]): IO[ExitCode] = {
 
   val repository = new BikeRepository(xa)
 
+  val config = Conf.load(configFile = "bikeApp.conf")
+   
+  
+
    BlazeServerBuilder[IO]
-      .bindHttp(8098, "localhost")
+      .bindHttp(config.server.port, config.server.host)
       .withHttpApp(new BikeService(repository).bikeRoutes.orNotFound)
       .resource
       .use(_ => IO.never)
       .as(ExitCode.Success)
 }
 }
+
 
 
 
