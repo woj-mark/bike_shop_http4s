@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0mC:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\src\test\scala\service\BikeServiceSpec.scala:65:19: not found: type Json[0m
+[0m[[0m[31merror[0m] [0m[0m      response.as[Json].unsafeRunSync() shouldBe json"""[0m
+[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m
