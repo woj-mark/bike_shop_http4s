@@ -1,22 +1,16 @@
 package config
 
+// import pureconfig._
+// import pureconfig.generic.auto._
 
 
-import cats.effect.{IO, Resource};
-import com.typesafe.config.ConfigFactory
-import pureconfig._
-import pureconfig.generic.auto._
-import pureconfig.module.catseffect.syntax._
+
+case class Port(number: Int) extends AnyVal
 
 
-object Conf{
-    case class ServerConfig(host: String ,port: Int);
 
-    case class Conf(server: ServerConfig)
+case class ServiceConf(host: String, port: Port);
+  
 
-    
-    def load(configFile: String = "bikeApp.conf"): Resource[IO, Conf] = {
-      Resource.eval(ConfigSource.fromConfig(ConfigFactory.load(configFile)).loadF[IO, Conf]())
-  }
 
-}
+ 
