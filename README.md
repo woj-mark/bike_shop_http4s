@@ -19,4 +19,9 @@ The endpoints provided by the app are as follows:
 
 ### Testing the endpoints
 Below I provide a few examples on how the endpoints can be hit with curl (or postman), assuming the app runs on port 8080:
-- Get all bikes: ```curl http://localhost:8080/bikes```
+- Get all bikes:   ```curl http://localhost:8080/bikes```
+- Get a single bike with id (id = 2 used here):  ```curl http://localhost:8080/bikes/2```
+- Create a bike: 
+ ```curl -X POST http://localhost:8080/bikes -d "{\"model\":\"Viper\",\"brand\":\"Unibike\",\"year\":2021,\"price\":1200,\"size\":\"XXL\",\"id\":1}" ```
+ - Update a bike (assuming id=1): ```curl -X PUT http://localhost:8080/bikes/1 -d "{\"model\":\"Roubaix\",\"brand\":\"Romet\",\"year\":1980,\"price\":350,\"size\":\"L\",\"id\":1}```
+ - Delete a bike (assuming id =1) 
