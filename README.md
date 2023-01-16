@@ -8,7 +8,7 @@ I built it using libraries from Scala Typelevel ecosystem, namely:
 - circe for JSON parsing.
 
 ## Endpoints
-
+The endpoints provided by the app are as follows:
 | METHOD | URL    | DESCRIPTION    |
 | ----- | --- | --- |
 | GET | /bikes   | Returns all bikes.   |
@@ -16,3 +16,7 @@ I built it using libraries from Scala Typelevel ecosystem, namely:
 | POST | /bikes   | Creates a bike, returns a 201 with newly created bike as JSON. Id is autogenatated.  |
 | PUT | /bikes/{id}   | Updates an existing bike, returns a 200 with the updated bike if a bike with the given id is present, 404 otherwise.   |
 | DELETE | /bikes/{id}  | Deletes a bike with provided id, returns 404 if there's no bike with the provided id   |
+
+### Testing the endpoints
+Below I provide a few examples on how the endpoints can be hit with curl (or postman), assuming the app runs on port 8080:
+- Get all bikes: ```curl http://localhost:8080/bikes```
