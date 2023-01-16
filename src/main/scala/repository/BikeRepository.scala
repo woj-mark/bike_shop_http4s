@@ -5,17 +5,14 @@ import doobie.util.transactor.Transactor
 import bikeshop.domain.bike._
 import doobie.implicits._
 import bikeshop.domain.bikeNotFoundError._
-//import bikeshop.service.bikeNotFoundError._
-
+import fs2.Stream
 
 
 class BikeRepository(transactor: Transactor[IO]) {
 
-  def findAllBikes : IO[List[Bike]] = {
+  def findAllBikes : Stream[IO,Bike] = {
     // As the number of the entries might be unknown it is more safe to use fs2 stream as an in-memory list might be too big.
-    val allBikesStream : fs2.Stream[doobie.ConnectionIO, Bike] = sql"select model,brand,year, price,size, id from bikes".query[Bike].stream
-    //Compiling the stream into an effect containing a List
-    allBikesStream.compile.toList.transact(transactor)
+     sql"select model,brand,year, price,size, id from bikes".query[Bike].stream.transact(transactor)
  }
 
    def findBikeByID(id:Int) : IO[Either[BikeNotFoundError,Bike]] ={

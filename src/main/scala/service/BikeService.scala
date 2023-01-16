@@ -10,6 +10,8 @@ import cats.effect.IO
 import bikeshop.domain.bike._
 import io.circe.syntax._
 import org.http4s.circe._
+//import fs2.Stream
+
 
 class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
       
@@ -18,8 +20,7 @@ class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
       //Get all bikes
       case GET -> Root / "bikes" =>
         for{
-            allBikes <- bikeRepo.findAllBikes
-            allBikesResponse <- Ok(allBikes.asJson)
+            allBikesResponse <- Ok(bikeRepo.findAllBikes.map(_.asJson))
         } yield allBikesResponse
 
       //Get bike by id
