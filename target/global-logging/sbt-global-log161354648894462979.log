@@ -1,12 +1,12 @@
-[0m[[0m[0mdebug[0m] [0m[0m> Exec(test, Some(b6b30bc3-b5d3-40c6-aff4-df9f3e3095b2), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(test, Some(3786b13c-0926-4440-8567-815b06f74700), Some(CommandSource(console0)))[0m
 [0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Test / test[0m
 [0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
 [0m[[0m[0minfo[0m] [0m[0mcompiling 1 Scala source to C:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\target\scala-2.13\test-classes ...[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\src\test\scala\service\BikeServiceSpec.scala:65:19: not found: type Json[0m
-[0m[[0m[31merror[0m] [0m[0m      response.as[Json].unsafeRunSync() shouldBe json"""[0m
-[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\src\test\scala\service\BikeServiceSpec.scala:105:22: Methods without a parameter list and by-name params can no longer be converted to functions as `m _`, write a function literal `() => m` instead[0m
+[0m[[0m[31merror[0m] [0m[0m    (() =>repository.findAllBikes _)[0m
+[0m[[0m[31merror[0m] [0m[0m                     ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m
 [0m[[0m[31merror[0m] [0m[0m(Test / [31mcompileIncremental[0m) Compilation failed[0m
-[0m[[0m[31merror[0m] [0m[0mTotal time: 3 s, completed 15 Jan 2023, 21:15:56[0m
+[0m[[0m[31merror[0m] [0m[0mTotal time: 1 s, completed 16 Jan 2023, 11:01:46[0m
 [0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m
 [0m[[0m[31merror[0m] [0m[0mserver failed to start on local:sbt-server-a5fa93c99b09bd17af5f. java.io.IOException: Could not create lock for \\.\pipe\sbt-server-a5fa93c99b09bd17af5f_lock, error 5[0m

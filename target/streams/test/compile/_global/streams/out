@@ -1,4 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\src\test\scala\service\BikeServiceSpec.scala:65:19: not found: type Json[0m
-[0m[[0m[31merror[0m] [0m[0m      response.as[Json].unsafeRunSync() shouldBe json"""[0m
-[0m[[0m[31merror[0m] [0m[0m                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\User\Programming\Scala\bike_shop_http4s\bike_shop_http4s\src\test\scala\service\BikeServiceSpec.scala:105:22: Methods without a parameter list and by-name params can no longer be converted to functions as `m _`, write a function literal `() => m` instead[0m
+[0m[[0m[31merror[0m] [0m[0m    (() =>repository.findAllBikes _)[0m
+[0m[[0m[31merror[0m] [0m[0m                     ^[0m
 [0m[[0m[31merror[0m] [0m[0mone error found[0m

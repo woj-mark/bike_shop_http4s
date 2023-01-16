@@ -49,7 +49,7 @@ class BikeServiceSpec extends AnyWordSpec with MockFactory with Matchers {
 
      "update a bike" in {
       val id = 1
-      val bike = new Bike("Viper","B'twin", 2009, 930, "L",15)
+      val bike = new Bike("Trucker","Surly", 2020, 1100, "XL",1)
       (repository.updateBike _).when(id, bike).returns(IO.pure(Right(bike.copy(id = id))))
       val updateJson = json"""
         {
@@ -73,7 +73,31 @@ class BikeServiceSpec extends AnyWordSpec with MockFactory with Matchers {
           "id": ${id}
         }"""
     }
-    
+
+         "return a single bike with id" in {
+        val id = 1
+        val bike = new Bike("Viper","B'twin", 2009, 930, "L",1)
+        (repository.findBikeByID _).when(id).returns(IO.pure(Right(bike)))
+
+        val response = serve(Request[IO](GET, Uri.unsafeFromString(s"/bikes/$id")))
+        response.status shouldBe Status.Ok
+        response.as[Json].unsafeRunSync() shouldBe json"""
+         {
+          "model": ${bike.model},
+          "brand": ${bike.brand},
+          "year": ${bike.year},
+          "price": ${bike.price},
+          "size": ${bike.size},
+          "id": ${bike.id}
+        }"""
     }
-    
+
+    "delete a bike" in {
+      val id = 1
+      (repository.deleteBike _).when(id).returns(IO.pure(Right(id)))
+
+      val response = serve(Request[IO](DELETE, Uri.unsafeFromString(s"/bikes/$id")))
+      response.status shouldBe Status.NoContent
+    }
+}
 }

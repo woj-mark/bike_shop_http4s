@@ -46,11 +46,11 @@ class BikeRepository(transactor: Transactor[IO]) {
   }
   }
 
-  def deleteBike(id: Int): IO[Either[BikeNotFoundError, String]] = {
+  def deleteBike(id: Int): IO[Either[BikeNotFoundError, Int]] = {
     val query = sql"DELETE FROM bikes WHERE id = $id".update.run.transact(transactor)
     query.map { numberOfRows =>
       if (numberOfRows == 1) {
-        Right((s"Bike (id=${id}) has been successfully deleted."))
+        Right(id)
       } else {
         Left(BikeNotFoundError(s"Bike with  id=${id} wasn't found- cannot be deleted."))
       }

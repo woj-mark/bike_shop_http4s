@@ -48,7 +48,7 @@ class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
       case DELETE -> Root/ "bikes"/ IntVar(id) =>
         bikeRepo.deleteBike(id).flatMap{
             case Left(error) => NotFound(error.message)
-            case Right(message) => Ok(message)
+            case Right(_) => NoContent()
         }
         
         
