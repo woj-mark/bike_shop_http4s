@@ -6,6 +6,7 @@ I built it using libraries from Scala Typelevel ecosystem, namely:
 - [http4s](https://http4s.org/) for the http library
 - [doobie](https://tpolecat.github.io/doobie/) for accessing a PostgreSQL database 
 - [circe](https://circe.github.io/circe/) for JSON parsing.
+- [cats-effect](https://typelevel.org/cats-effect/) to handle side-effects in the program with an IO monad.
 
 ## Endpoints
 The endpoints provided by the app are as follows:
