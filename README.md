@@ -8,6 +8,9 @@ I built it using libraries from Scala Typelevel ecosystem, namely:
 - [circe](https://circe.github.io/circe/) for JSON parsing;
 - [cats-effect](https://typelevel.org/cats-effect/) to handle side-effects in the program with an ```IO``` monad.
 
+## Architecture
+ ![image](https://user-images.githubusercontent.com/64374937/213028610-c360246e-43fa-4c22-80d8-a5f3997bd462.png)
+
 ## Endpoints
 The endpoints provided by the app are as follows:
 | METHOD | URL    | DESCRIPTION    |
@@ -56,5 +59,5 @@ It is assumed that the user has [sbt](https://www.scala-sbt.org/), [docker](http
 - Please open the docker directory in the project structure in cdm and start the docker container with : ```docker-compose up```
 - You can run the microservice with ```sbt run```. It will listen to the port specifiec in the ```application.conf``` (8080 by default).
 
- ![image](https://user-images.githubusercontent.com/64374937/213028610-c360246e-43fa-4c22-80d8-a5f3997bd462.png)
+
 
