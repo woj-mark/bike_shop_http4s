@@ -3,9 +3,9 @@
 I've always wanted to run a bikeshop and my current career aspitation is to build software with functional Scala.
 To kill two birds with one stone, I decided to build a simple CRUD service for a bikeshop.
 I built it using libraries from Scala Typelevel ecosystem, namely: 
-- http4s for the http library
-- doobie for accessing a PostgreSQL database 
-- circe for JSON parsing.
+- [http4s](https://http4s.org/) for the http library
+- [doobie](https://tpolecat.github.io/doobie/) for accessing a PostgreSQL database 
+- [circe](https://circe.github.io/circe/) for JSON parsing.
 
 ## Endpoints
 The endpoints provided by the app are as follows:
