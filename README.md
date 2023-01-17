@@ -29,21 +29,24 @@ Below I provide a few examples on how the endpoints can be hit with curl (or pos
 
 ## Tech Stack
 ### http4s
-I built the HTTP server with http4s which provides a purely functional library to manage HTTP requests and responses. The routes are linked to the business logic through instances of HttpRoutes which use partial function to match an incoming HTTP request and produce an HTTP response with a side effects.
+I built the HTTP server with [http4s](https://http4s.org/) which provides a purely functional library to manage HTTP requests and responses. The routes are linked to the business logic through instances of ```HttpRoutes``` which use partial function to match an incoming HTTP request and produce an HTTP response with a side effects.
 
-I'm using cats-effect ```IO``` monad to delay the evaluation of the "impure" effects (i.e. database writes) the "end of the world".
+I'm using [cats-effect](https://typelevel.org/cats-effect/) ```IO``` monad to delay the evaluation of the "impure" effects (i.e. database writes) the "end of the world".
 
 http4s enables straming the responses with [fs2 Streams](https://http4s.org/v1/docs/streaming.html). The fs2 stream is returned via ```GET/bikes``` endpoint and prevents the response from being generated in memory before being sent to the client.
 
 ## circe
-circe library is another library from Typelevel ecosystem and is used in this project to convert Scala case classes into a JSON string and vice versa (de/serialisation) by defining JSON encoders and decoders.
+[circe](https://circe.github.io/circe/) library is another library from Typelevel ecosystem and is used in this project to convert Scala case classes into a JSON string and vice versa (de/serialisation) by defining JSON encoders and decoders.
 
 ## doobie
-doobie is a purely functional JDBC layer for Scala used to connect to the database. It is also integrated with cats-effect library,  what allows theall the effectful code in this app to be wrapped with an ```IO``` monad.
+[doobie](https://tpolecat.github.io/doobie/) is a purely functional JDBC layer for Scala used to connect to the database. It is also integrated with cats-effect library,  what allows all the effectful code in this app to be wrapped with an ```IO``` monad.
 
-used to connect to the database. This is a pure functional JDBC layer for Scala. This example project uses cats-effect in combination with doobie, but doobie can use another effect monad.
+## Database
+I used [Postgres](https://www.postgresql.org/) as a database. A Postgres instance is spun up with using a Postgres Docker image defined in ```docker-compose.yml``` file. So when the docker image is deleted, the state of the microservice would be lost.
 
-Because both http4s and doobie use an effect monad, the combination is still pure and functional.
+## Configuration
+I used pureconfig is used to read the configuration file application.conf. This library allows reading a configuration into well typed objects.
+
 
 
 ## How to run
