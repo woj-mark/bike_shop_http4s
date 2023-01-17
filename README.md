@@ -45,8 +45,7 @@ http4s enables straming the responses with [fs2 Streams](https://http4s.org/v1/d
 I used [Postgres](https://www.postgresql.org/) as a database. A Postgres instance is spun up with using a Postgres Docker image defined in ```docker-compose.yml``` file. So when the docker image is deleted, the state of the microservice would be lost.
 
 ## Configuration
-I used pureconfig is used to read the configuration file application.conf. This library allows reading a configuration into well typed objects.
-
+I used [pureconfig](https://pureconfig.github.io/) to read the configuration file application.conf. The advantage of [pureconfig](https://pureconfig.github.io/) is that it enabled reading a configuration into typed objects.
 
 
 ## How to run
