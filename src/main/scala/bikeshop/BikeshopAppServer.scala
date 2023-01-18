@@ -17,8 +17,7 @@ import pureconfig.error.ConfigReaderFailures
 //The IOApp application enables running a service which uses an IO monad effect
 object BikeshopAppServer extends IOApp {
 
-
-    //Transactor returning the IO effect
+  //Transactor returning the IO effect
     val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
   "org.postgresql.Driver",
   "jdbc:postgresql:bikeshop",
@@ -26,29 +25,25 @@ object BikeshopAppServer extends IOApp {
   "docker"   // password
 )
 
+//A helper function to extract the port from config
    private def extractPort(config : Either[ConfigReaderFailures, ServiceConf]) : Int = {
     config.fold(
   _ => 8080,
   r => r.port.number)
    }
 
-   
+   //A helper function to extract the host from config
    private def extractHost(config : Either[ConfigReaderFailures, ServiceConf]) : String = {
     config.fold(
   _ => "localhost",
   r => r.host)
    }
 
-
   override def run(args: List[String]): IO[ExitCode] = {
 
   val repository = new BikeRepository(xa)
 
   val config : Either[ConfigReaderFailures, ServiceConf] = ConfigSource.default.load[ServiceConf]
-  
-
-
-  
 
    BlazeServerBuilder[IO]
       .bindHttp(extractPort(config), extractHost(config))

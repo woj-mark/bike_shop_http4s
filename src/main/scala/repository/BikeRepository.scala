@@ -64,5 +64,4 @@ class BikeRepository(transactor: Transactor[IO]) {
         Left(BikeNotFoundError(s"Bike with  id=${id} wasn't found."))}
 }
 }
- 
 }

@@ -51,13 +51,8 @@ class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
             case Left(error) => NotFound(error.message)
             case Right(_) => NoContent()
         }
-        
-        
-
         }
 
-
-   
     // A helper method to extract the response values from Either for Not 
       private def bikeResult(data : Either[BikeNotFoundError,Bike]) = {
             data match{
@@ -66,7 +61,7 @@ class BikeService(bikeRepo: BikeRepository) extends Http4sDsl[IO] {
             }
         }
 
-        // A helper method to extract the response values from Either for Not 
+     // A helper method to extract the response values from Either for Not 
       private def bikeAddedResult(data : Either[BikeNotFoundError,Bike]) = {
             data match{
                 case Left(error) => NotFound(error.message)
