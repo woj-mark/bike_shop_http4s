@@ -11,7 +11,7 @@ I built it using libraries from Scala Typelevel ecosystem, namely:
 ## Architecture
 The diagram below provides a high-level overview of the app's architecture.
 
-The HTTP layer defines defines each endpoint’s structure of the user-facing API .The service layer contains the business logic and creates entities that the API layer can expose in JSON format.PostgreSQL database running on a Postgres Docker image serves as the main storage system.
+The HTTP layer defines defines each endpoint’s structure of the user-facing API .The service layer contains the business logic and creates entities that the API layer can expose in JSON format. PostgreSQL database running on a Postgres Docker image serves as the main storage system.
 
  ![image](https://user-images.githubusercontent.com/64374937/213028610-c360246e-43fa-4c22-80d8-a5f3997bd462.png)
 
