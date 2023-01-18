@@ -55,14 +55,17 @@ I used [Postgres](https://www.postgresql.org/) as a database. A Postgres instanc
 ## Configuration
 I used [pureconfig](https://pureconfig.github.io/) to read the configuration file application.conf. The advantage of [pureconfig](https://pureconfig.github.io/) is that it enabled reading a configuration into typed objects.
 
+## Testing
+Simple unit tests with mock the repository that accesses the database were performed using [Scalatest](https://www.scalatest.org/) library.
 
-## How to run
+
+
+# How to run
 Currently, the app can be run locally. In the near future (once the front-end is complete), I'm planning to deploy the application in the cloud.
 It is assumed that the user has [sbt](https://www.scala-sbt.org/), [docker](https://docs.docker.com/get-docker/) and [postgresql](https://www.postgresql.org/download/) installed on their machines.
 
-### Running locally
+## Running locally
 - Please open the docker directory in the project structure in cdm and start the docker container with : ```docker-compose up```
 - You can run the microservice with ```sbt run```. It will listen to the port specifiec in the ```application.conf``` (8080 by default).
-
 
 
