@@ -1,6 +1,6 @@
 # bike_shop_http4s
 ## Overview
-I've always wanted to run a bikeshop and my current career aspitation is to build software with functional Scala.
+I've always wanted to run a bikeshop and my aspitation is to build software with functional Scala.
 To kill two birds with one stone, I decided to build a simple CRUD service for a bikeshop.
 I built it using libraries from Scala Typelevel ecosystem, namely: 
 - [http4s](https://http4s.org/) for the http library;
