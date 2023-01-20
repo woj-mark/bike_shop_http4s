@@ -1,9 +1,7 @@
 package bikeshop.domain
 
-
 object bikeNotFoundError {
-  
-    case class BikeNotFoundError(message:String)
-    
+
+  case class BikeNotFoundError(message: String)
 
 }
