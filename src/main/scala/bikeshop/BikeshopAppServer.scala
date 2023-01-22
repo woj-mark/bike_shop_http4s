@@ -5,6 +5,7 @@ import bikeshop.service.BikeService
 import cats.effect._
 import config._
 import doobie.util.transactor.Transactor
+import org.http4s.server.middleware.Logger
 import org.http4s.blaze.server.BlazeServerBuilder
 import pureconfig._
 import pureconfig.error.ConfigReaderFailures
@@ -42,9 +43,14 @@ object BikeshopAppServer extends IOApp {
     val config: Either[ConfigReaderFailures, ServiceConf] =
       ConfigSource.default.load[ServiceConf]
 
+    val bikeServiceApp = new BikeService(repository).bikeRoutes.orNotFound
+
+    val finalHttpApp =
+      Logger.httpApp(logHeaders = true, logBody = true)(bikeServiceApp)
+
     BlazeServerBuilder[IO]
       .bindHttp(extractPort(config), extractHost(config))
-      .withHttpApp(new BikeService(repository).bikeRoutes.orNotFound)
+      .withHttpApp(finalHttpApp)
       .resource
       .use(_ => IO.never)
       .as(ExitCode.Success)
