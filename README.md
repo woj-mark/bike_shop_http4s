@@ -43,6 +43,10 @@ I'm using [cats-effect](https://typelevel.org/cats-effect/) ```IO``` monad to de
 
 http4s enables straming the responses with [fs2 Streams](https://http4s.org/v1/docs/streaming.html). The fs2 stream is returned via ```GET/bikes``` endpoint and prevents the response from being generated in memory before being sent to the client.
 
+I'm also using http4s [logger](https://http4s.org/v0.21/api/org/http4s/client/middleware/Logger$) for logging all requests and responses.
+
+
+
 ## circe
 [circe](https://circe.github.io/circe/) library is another library from Typelevel ecosystem and is used in this project to convert Scala case classes into a JSON string and vice versa (de/serialisation) by defining JSON encoders and decoders.
 
